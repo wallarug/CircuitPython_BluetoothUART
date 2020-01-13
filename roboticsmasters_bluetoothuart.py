@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`circuitpython_bluetoothuart`
+`roboticsmasters_bluetoothuart`
 ================================================================================
 
 Helper class to communicate with the Adafruit Bluetooth LE UART Friend in CircuitPython
@@ -50,7 +50,7 @@ Implementation Notes
 # imports
 
 __version__ = "0.0.0-auto.0"
-__repo__ = "https://github.com/wallarug/CircuitPython_CircuitPython_BluetoothUART.git"
+__repo__ = "https://github.com/wallarug/CircuitPython_BluetoothUART.git"
 
 
 import time
