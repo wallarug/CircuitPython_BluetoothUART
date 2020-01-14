@@ -56,7 +56,6 @@ __repo__ = "https://github.com/wallarug/CircuitPython_BluetoothUART.git"
 import time
 import struct
 from digitalio import Direction, Pull
-from adafruit_bus_device.spi_device import SPIDevice
 from micropython import const
 
 # pylint: disable=bad-whitespace
@@ -98,7 +97,7 @@ _PACKET_COLOR_LEN     = const(6)
 class BluetoothUART:
     """Helper for the Bluetooth LE UART Friend"""
 
-    def __init__(self, uart, reset, debug=False): # pylint: disable=too-many-arguments
+    def __init__(self, uart, debug=False): # pylint: disable=too-many-arguments
         self._irq = irq
         self._buf_tx = bytearray(20)
         self._buf_rx = bytearray(20)
@@ -116,8 +115,8 @@ class BluetoothUART:
 
         
         # irq line is active high input, so set a pulldown as a precaution
-        self._irq.direction = Direction.INPUT
-        self._irq.pull = Pull.DOWN
+        #self._irq.direction = Direction.INPUT
+        #self._irq.pull = Pull.DOWN
 
         self._uart_device = uart
 
