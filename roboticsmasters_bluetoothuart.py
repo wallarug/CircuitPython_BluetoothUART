@@ -98,7 +98,7 @@ _PACKET_COLOR_LEN     = const(6)
 class BluetoothUART:
     """Helper for the Bluetooth LE UART Friend"""
 
-    def __init__(self, spi, cs, irq, reset, debug=False): # pylint: disable=too-many-arguments
+    def __init__(self, uart, reset, debug=False): # pylint: disable=too-many-arguments
         self._irq = irq
         self._buf_tx = bytearray(20)
         self._buf_rx = bytearray(20)
@@ -108,22 +108,18 @@ class BluetoothUART:
         self._buffer = []
 
         # Reset
-        reset.direction = Direction.OUTPUT
-        reset.value = False
-        time.sleep(0.01)
-        reset.value = True
-        time.sleep(0.5)
+        #reset.direction = Direction.OUTPUT
+        #reset.value = False
+        #time.sleep(0.01)
+        #reset.value = True
+        #time.sleep(0.5)
 
-        # CS is an active low output
-        cs.direction = Direction.OUTPUT
-        cs.value = True
-
+        
         # irq line is active high input, so set a pulldown as a precaution
         self._irq.direction = Direction.INPUT
         self._irq.pull = Pull.DOWN
 
-        self._spi_device = SPIDevice(spi, cs,
-                                     baudrate=4000000, phase=0, polarity=0)
+        self._uart_device = uart
 
     def _cmd(self, cmd):  # pylint: disable=too-many-branches
         """
@@ -162,8 +158,8 @@ class BluetoothUART:
             pos += plen
 
             # Send out the SPI bus
-            with self._spi_device as spi:
-                spi.write(self._buf_tx, end=len(cmd) + 4) # pylint: disable=no-member
+            with self._uart_device as ser:
+                ser.write(self._buf_tx, end=len(cmd) + 4) # pylint: disable=no-member
 
         # Wait up to 200ms for a response
         timeout = 0.2
@@ -183,8 +179,8 @@ class BluetoothUART:
         while self._irq.value is True:
             # Read the current response packet
             time.sleep(0.01)
-            with self._spi_device as spi:
-                spi.readinto(self._buf_rx)
+            with self._uart_device as ser:
+                ser.readinto(self._buf_rx)
 
             # Read the message envelope and contents
             msgtype, rspid, rsplen = struct.unpack('>BHB', self._buf_rx)
@@ -214,8 +210,8 @@ class BluetoothUART:
             print("Writing: ", [hex(b) for b in self._buf_tx])
 
         # Send out the SPI bus
-        with self._spi_device as spi:
-            spi.write(self._buf_tx, end=4) # pylint: disable=no-member
+        with self._uart_device as ser:
+            ser.write(self._buf_tx, end=4) # pylint: disable=no-member
 
         # Wait 1 second for the command to complete.
         time.sleep(1)
