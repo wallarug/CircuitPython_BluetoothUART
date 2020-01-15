@@ -91,6 +91,8 @@ _ERROR_UNSUPPORTED    = const(0x8063) # AT: Unsupported command
 _PACKET_BUTTON_LEN    = const(5)
 _PACKET_COLOR_LEN     = const(6)
 
+# TODO: @wallarug add in all the AT codes needed to make the device work.
+
 # pylint: enable=bad-whitespace
 
 
