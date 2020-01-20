@@ -15,6 +15,9 @@ Introduction
 
 Helper class to communicate with the Adafruit Bluetooth LE UART Friend in CircuitPython
 
+UNDER DEVELOPMENT
+
+Provides features when using AT command mode.  Normal usage can be achieved by just setting up a serial / UART port.
 
 Dependencies
 =============
